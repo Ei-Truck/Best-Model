@@ -37,24 +37,31 @@ scalers = {
 modelos = {
     "Decision Tree": (DecisionTreeClassifier(), {
         "max_depth": [None, 3, 5, 10],
-        "ccp_alpha": [0.0, 0.01, 0.05]
+        "ccp_alpha": [0.0, 0.01, 0.05],
+        "min_samples_split": [2, 5, 10],
+        "min_samples_leaf": [1, 2, 4]
     }),
     "Random Forest": (RandomForestClassifier(), {
-        "n_estimators": [50, 100],
-        "max_depth": [None, 5, 10]
+        "n_estimators": [50, 100, 200, 300],
+        "max_depth": [None, 5, 10, 20],
+        "max_features": ["sqrt", "log2", None],
+        "min_samples_split": [2, 5, 10],
+        "min_samples_leaf": [1, 2, 4]
     }),
     "SVM": (SVC(), {
-        "C": [0.1, 1, 10],
-        "kernel": ["linear", "rbf"],
+        "C": [0.01, 0.1, 1, 10, 100],
+        "kernel": ["linear", "rbf", "poly", "sigmoid"],
         "gamma": ["scale", "auto"]
     }),
     "KNN": (KNeighborsClassifier(), {
-        "n_neighbors": [3, 5, 7, 9],
-        "weights": ["uniform", "distance"]
+        "n_neighbors": [3, 5, 7, 9, 11],
+        "weights": ["uniform", "distance"],
+        "p": [1, 2]
     }),
     "MLP Neural Net": (MLPClassifier(max_iter=2000), {
-        "hidden_layer_sizes": [(50,), (100,), (50, 50)],
-        "alpha": [0.0001, 0.001, 0.01]
+        "hidden_layer_sizes": [(50,), (100,), (50, 50), (100, 50), (50, 100, 50)],
+        "alpha": [0.0001, 0.001, 0.01],
+        "learning_rate_init": [0.001, 0.01]
     })
 }
 
