@@ -1,20 +1,14 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-from sklearn.linear_model import LogisticRegression, Perceptron, RidgeClassifier
-from sklearn.tree import DecisionTreeClassifier, ExtraTreeClassifier
-from sklearn.ensemble import (
-    RandomForestClassifier,
-    GradientBoostingClassifier,
-    AdaBoostClassifier,
-    BaggingClassifier,
-)
-from sklearn.svm import SVC, LinearSVC
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OrdinalEncoder, OneHotEncoder
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB, BernoulliNB
 from sklearn.neural_network import MLPClassifier
 
 from sklearn.datasets import load_iris
@@ -29,76 +23,97 @@ y = df["target"]
 if y.dtype == "object":
     y = LabelEncoder().fit_transform(y)
 
-# ordinal encoder
-# one hot encoder
-X = pd.get_dummies(X, drop_first=True)
+encoders = {
+    "OrdinalEncoder": OrdinalEncoder(),
+    "OneHotEncoder": OneHotEncoder(drop="first", sparse_output=False),
+    "GetDummies": None
+}
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42
-)
-
-# min max scaler or standard scaler
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+scalers = {
+    "StandardScaler": StandardScaler(),
+    "MinMaxScaler": MinMaxScaler()
+}
 
 modelos = {
-    # "Logistic Regression": LogisticRegression(max_iter=1000),
-    "Decision Tree": DecisionTreeClassifier(ccp_alpha=[alphas for alphas in np.arange(0, 0.1, 0.01)]), #found best ccp_alpha with GridSearchCV
-    # "Extra Tree": ExtraTreeClassifier(),
-    "Random Forest": RandomForestClassifier(),
-    # "Gradient Boosting": GradientBoostingClassifier(),
-    # "AdaBoost": AdaBoostClassifier(),
-    # "Bagging": BaggingClassifier(),
-    "SVM": SVC(kernel="rbf", max_iter=2000),
-    # "Linear SVM": LinearSVC(max_iter=2000),
-    "KNN": KNeighborsClassifier(n_neighbors=5), #Test with different n_neighbors
-    # "GaussianNB": GaussianNB(),
-    # "BernoulliNB": BernoulliNB(),
-    "MLP Neural Net": MLPClassifier(max_iter=2000), 
-    # "Perceptron": Perceptron(max_iter=1000),
-    # "Ridge Classifier": RidgeClassifier(),
+    "Decision Tree": (DecisionTreeClassifier(), {
+        "max_depth": [None, 3, 5, 10],
+        "ccp_alpha": [0.0, 0.01, 0.05]
+    }),
+    "Random Forest": (RandomForestClassifier(), {
+        "n_estimators": [50, 100],
+        "max_depth": [None, 5, 10]
+    }),
+    "SVM": (SVC(), {
+        "C": [0.1, 1, 10],
+        "kernel": ["linear", "rbf"],
+        "gamma": ["scale", "auto"]
+    }),
+    "KNN": (KNeighborsClassifier(), {
+        "n_neighbors": [3, 5, 7, 9],
+        "weights": ["uniform", "distance"]
+    }),
+    "MLP Neural Net": (MLPClassifier(max_iter=2000), {
+        "hidden_layer_sizes": [(50,), (100,), (50, 50)],
+        "alpha": [0.0001, 0.001, 0.01]
+    })
 }
 
 resultados = []
 
-#GridSearchCV for hyperparameter tuning
-for nome, modelo in modelos.items():
-    try:
-        modelo.fit(X_train, y_train)
-        y_pred = modelo.predict(X_test)
+for enc_name, encoder in encoders.items():
+    if enc_name == "GetDummies":
+        X_enc = pd.get_dummies(X, drop_first=True)
+    else:
+        X_enc = encoder.fit_transform(X)
+        if isinstance(X_enc, np.ndarray):
+            X_enc = pd.DataFrame(X_enc)
 
-        #classification report
-        accuracy = accuracy_score(y_test, y_pred)
-        precision = precision_score(y_test, y_pred, average="weighted")
-        recall = recall_score(y_test, y_pred, average="weighted")
-        f1 = f1_score(y_test, y_pred, average="weighted")
+    for sc_name, scaler in scalers.items():
+        X_train, X_test, y_train, y_test = train_test_split(
+            X_enc, y, test_size=0.3, random_state=42
+        )
 
-        resultados.append(
-            {
-                "Modelo": nome,
-                "Accuracy": accuracy,
-                "Precision": precision,
-                "Recall": recall,
-                "F1-Score": f1,
-            }
-        )
-    except Exception as e:
-        resultados.append(
-            {
-                "Modelo": nome,
-                "Accuracy": None,
-                "Precision": None,
-                "Recall": None,
-                "F1-Score": None,
-                "Erro": str(e),
-            }
-        )
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
+
+        for model_name, (modelo, param_grid) in modelos.items():
+            try:
+                grid = GridSearchCV(modelo, param_grid, cv=5, scoring="f1_weighted", n_jobs=-1)
+                grid.fit(X_train, y_train)
+
+                y_pred = grid.predict(X_test)
+
+                accuracy = accuracy_score(y_test, y_pred)
+                precision = precision_score(y_test, y_pred, average="weighted")
+                recall = recall_score(y_test, y_pred, average="weighted")
+                f1 = f1_score(y_test, y_pred, average="weighted")
+
+                resultados.append({
+                    "Encoder": enc_name,
+                    "Scaler": sc_name,
+                    "Modelo": model_name,
+                    "Melhores Params": grid.best_params_,
+                    "Accuracy": accuracy,
+                    "Precision": precision,
+                    "Recall": recall,
+                    "F1-Score": f1
+                })
+                
+            except Exception as e:
+                resultados.append({
+                    "Encoder": enc_name,
+                    "Scaler": sc_name,
+                    "Modelo": model_name,
+                    "Melhores Params": None,
+                    "Accuracy": None,
+                    "Precision": None,
+                    "Recall": None,
+                    "F1-Score": None,
+                    "Erro": str(e)
+                })
 
 resultados_df = pd.DataFrame(resultados)
-
-#Classification report for the best model
 melhores = resultados_df.sort_values(by="F1-Score", ascending=False)
 
-print("Melhores modelos ordenados: ")
+print("Ranking final:")
 print(melhores)
