@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OrdinalEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
@@ -10,6 +13,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
+
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 from sklearn.datasets import load_iris
 
