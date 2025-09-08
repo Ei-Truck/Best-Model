@@ -150,7 +150,7 @@ for enc_name, encoder in encoders.items():
                     "Precision": None,
                     "Recall": None,
                     "F1-Score": None,
-                    "Erro": str(e)
+                    "Erro": str(e),
                 })
 
 resultados_df = pd.DataFrame(resultados)
