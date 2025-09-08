@@ -5,7 +5,13 @@ import warnings
 from sklearn.exceptions import ConvergenceWarning
 
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OrdinalEncoder, OneHotEncoder
+from sklearn.preprocessing import (
+    StandardScaler,
+    MinMaxScaler,
+    LabelEncoder,
+    OrdinalEncoder,
+    OneHotEncoder,
+)
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from sklearn.tree import DecisionTreeClassifier
