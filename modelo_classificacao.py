@@ -44,34 +44,63 @@ scalers = {
 }
 
 modelos = {
-    "Decision Tree": (DecisionTreeClassifier(), {
-        "max_depth": [None, 3, 5, 10],
-        "ccp_alpha": [0.0, 0.01, 0.05],
-        "min_samples_split": [2, 5, 10],
-        "min_samples_leaf": [1, 2, 4]
-    }),
-    "Random Forest": (RandomForestClassifier(), {
-        "n_estimators": [50, 100, 200, 300],
-        "max_depth": [None, 5, 10, 20],
-        "max_features": ["sqrt", "log2", None],
-        "min_samples_split": [2, 5, 10],
-        "min_samples_leaf": [1, 2, 4]
-    }),
-    "SVM": (SVC(), {
-        "C": [0.01, 0.1, 1, 10, 100],
-        "kernel": ["linear", "rbf", "poly", "sigmoid"],
-        "gamma": ["scale", "auto"]
-    }),
-    "KNN": (KNeighborsClassifier(), {
-        "n_neighbors": [3, 5, 7, 9, 11],
-        "weights": ["uniform", "distance"],
-        "p": [1, 2]
-    }),
-    "MLP Neural Net": (MLPClassifier(max_iter=2000), {
-        "hidden_layer_sizes": [(50,), (100,), (50, 50), (100, 50), (50, 100, 50)],
-        "alpha": [0.0001, 0.001, 0.01],
-        "learning_rate_init": [0.001, 0.01]
-    })
+    "Decision Tree": (
+        DecisionTreeClassifier(class_weight="balanced"),
+        {
+            "criterion": ["gini", "entropy", "log_loss"],
+            "splitter": ["best", "random"],
+            "max_depth": [None, 3, 5, 10, 20, 30],
+            "min_samples_split": [2, 5, 10, 20],
+            "min_samples_leaf": [1, 2, 4, 6],
+            "max_features": [None, "sqrt", "log2"],
+            "ccp_alpha": [0.0, 0.01, 0.05, 0.1],
+        },
+    ),
+    "Random Forest": (
+        RandomForestClassifier(class_weight="balanced"),
+        {
+            "n_estimators": [50, 100, 200, 300, 500],
+            "criterion": ["gini", "entropy", "log_loss"],
+            "max_depth": [None, 5, 10, 20, 30],
+            "min_samples_split": [2, 5, 10, 20],
+            "min_samples_leaf": [1, 2, 4, 6],
+            "max_features": ["sqrt", "log2", None],
+            "bootstrap": [True, False],
+        },
+    ),
+    "SVM": (
+        SVC(),
+        {
+            "C": [0.01, 0.1, 1, 10, 100],
+            "kernel": ["linear", "rbf", "poly", "sigmoid"],
+            "gamma": ["scale", "auto"],
+            "degree": [2, 3, 4, 5],
+            "shrinking": [True, False],
+        },
+    ),
+    "KNN": (
+        KNeighborsClassifier(),
+        {
+            "n_neighbors": [3, 5, 7, 9, 11, 15],
+            "weights": ["uniform", "distance"],
+            "algorithm": ["auto", "ball_tree", "kd_tree", "brute"],
+            "p": [1, 2],
+        },
+    ),
+    "MLP Neural Net": (
+        MLPClassifier(max_iter=2000, early_stopping=True),
+        {
+            "hidden_layer_sizes": [
+                (50,), (100,), (50, 50), (100, 50),
+                (50, 100, 50), (100, 100), (200,), (100, 100, 50),
+            ],
+            "activation": ["tanh", "relu", "logistic"],
+            "solver": ["adam", "sgd", "lbfgs"],
+            "alpha": [0.0001, 0.001, 0.01, 0.1],
+            "learning_rate": ["constant", "adaptive"],
+            "learning_rate_init": [0.0001, 0.001, 0.01],
+        },
+    ),
 }
 
 resultados = []
@@ -94,7 +123,9 @@ for enc_name, encoder in encoders.items():
 
         for model_name, (modelo, param_grid) in modelos.items():
             try:
-                grid = GridSearchCV(modelo, param_grid, cv=5, scoring="f1_weighted", n_jobs=-1)
+                grid = GridSearchCV(
+                    modelo, param_grid, cv=5, scoring="f1_weighted", n_jobs=-1
+                )
                 grid.fit(X_train, y_train)
 
                 y_pred = grid.predict(X_test)
