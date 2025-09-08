@@ -127,25 +127,19 @@ for enc_name, encoder in encoders.items():
                     modelo, param_grid, cv=5, scoring="f1_weighted", n_jobs=-1
                 )
                 grid.fit(X_train, y_train)
-
                 y_pred = grid.predict(X_test)
-
-                accuracy = accuracy_score(y_test, y_pred)
-                precision = precision_score(y_test, y_pred, average="weighted")
-                recall = recall_score(y_test, y_pred, average="weighted")
-                f1 = f1_score(y_test, y_pred, average="weighted")
 
                 resultados.append({
                     "Encoder": enc_name,
                     "Scaler": sc_name,
                     "Modelo": model_name,
                     "Melhores Params": grid.best_params_,
-                    "Accuracy": accuracy,
-                    "Precision": precision,
-                    "Recall": recall,
-                    "F1-Score": f1
+                    "Accuracy": accuracy_score(y_test, y_pred),
+                    "Precision": precision_score(y_test, y_pred, average="weighted"),
+                    "Recall": recall_score(y_test, y_pred, average="weighted"),
+                    "F1-Score": f1_score(y_test, y_pred, average="weighted"),
                 })
-                
+
             except Exception as e:
                 resultados.append({
                     "Encoder": enc_name,
