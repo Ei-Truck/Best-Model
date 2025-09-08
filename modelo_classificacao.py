@@ -35,7 +35,7 @@ if y.dtype == "object":
 encoders = {
     "OrdinalEncoder": OrdinalEncoder(),
     "OneHotEncoder": OneHotEncoder(drop="first", sparse_output=False),
-    "GetDummies": None
+    "GetDummies": None,
 }
 
 scalers = {
