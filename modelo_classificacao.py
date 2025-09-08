@@ -26,10 +26,8 @@ from sklearn.datasets import load_iris
 
 data = load_iris(as_frame=True)
 df = data.frame
-df["target"] = data.target
-
-X = df.drop("target", axis=1)
-y = df["target"]
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
 
 if y.dtype == "object":
     y = LabelEncoder().fit_transform(y)
