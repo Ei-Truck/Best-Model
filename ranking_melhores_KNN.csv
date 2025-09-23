@@ -1,0 +1,7 @@
+Encoder,Scaler,Modelo,Melhores Params,Accuracy,Precision,Recall,F1-Score
+OrdinalEncoder,MinMaxScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.9123062015503876,0.9120042744530953,0.9123062015503876,0.9120889391107013
+OneHotEncoder,MinMaxScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.9103682170542635,0.910108535458247,0.9103682170542635,0.9101997846676781
+OrdinalEncoder,StandardScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.9074612403100775,0.9071903411167268,0.9074612403100775,0.9072873452514949
+GetDummies,MinMaxScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.9045542635658915,0.9046383982098097,0.9045542635658915,0.904594307315054
+OneHotEncoder,StandardScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.6487403100775194,0.7621875187193257,0.6487403100775194,0.5249658267723352
+GetDummies,StandardScaler,KNN,"{'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}",0.6443798449612403,0.7720829730426736,0.6443798449612403,0.5146714401717106
