@@ -1,0 +1,7 @@
+Encoder,Scaler,Modelo,Melhores Params,Accuracy,Precision,Recall,F1-Score
+GetDummies,MinMaxScaler,MLP Neural Net,"{'activation': 'relu', 'alpha': 0.001, 'hidden_layer_sizes': (50,), 'learning_rate': 'constant', 'solver': 'adam'}",0.9166666666666666,0.9171886692894115,0.9166666666666666,0.915691943252196
+OneHotEncoder,MinMaxScaler,MLP Neural Net,"{'activation': 'relu', 'alpha': 0.0001, 'hidden_layer_sizes': (100,), 'learning_rate': 'constant', 'solver': 'adam'}",0.9166666666666666,0.9177309292847098,0.9166666666666666,0.9155031801963521
+OrdinalEncoder,StandardScaler,MLP Neural Net,"{'activation': 'tanh', 'alpha': 0.001, 'hidden_layer_sizes': (100,), 'learning_rate': 'constant', 'solver': 'adam'}",0.9079457364341085,0.9083071893228322,0.9079457364341085,0.9068348505853341
+OrdinalEncoder,MinMaxScaler,MLP Neural Net,"{'activation': 'relu', 'alpha': 0.0001, 'hidden_layer_sizes': (100,), 'learning_rate': 'adaptive', 'solver': 'adam'}",0.8919573643410853,0.8941352452043791,0.8919573643410853,0.8896762259885252
+GetDummies,StandardScaler,MLP Neural Net,"{'activation': 'relu', 'alpha': 0.001, 'hidden_layer_sizes': (50,), 'learning_rate': 'adaptive', 'solver': 'adam'}",0.7185077519379846,0.7785886899144459,0.7185077519379846,0.662317598820278
+OneHotEncoder,StandardScaler,MLP Neural Net,"{'activation': 'relu', 'alpha': 0.0001, 'hidden_layer_sizes': (100,), 'learning_rate': 'constant', 'solver': 'adam'}",0.6409883720930233,0.8020711036031788,0.6409883720930233,0.6317961649839153
