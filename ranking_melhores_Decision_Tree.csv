@@ -1,0 +1,7 @@
+Encoder,Scaler,Modelo,Melhores Params,Accuracy,Precision,Recall,F1-Score
+OrdinalEncoder,MinMaxScaler,Decision Tree,"{'criterion': 'gini', 'max_depth': 10, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'splitter': 'best'}",0.9321705426356589,0.9320452473852697,0.9321705426356589,0.9320929052658903
+OrdinalEncoder,StandardScaler,Decision Tree,"{'criterion': 'gini', 'max_depth': 10, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 5, 'splitter': 'best'}",0.9312015503875969,0.9311645280449588,0.9312015503875969,0.9311821064066512
+GetDummies,MinMaxScaler,Decision Tree,"{'criterion': 'gini', 'max_depth': None, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 5, 'splitter': 'best'}",0.9016472868217055,0.902580920094786,0.9016472868217055,0.9019754889233038
+GetDummies,StandardScaler,Decision Tree,"{'criterion': 'entropy', 'max_depth': None, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'splitter': 'random'}",0.9006782945736435,0.9002263266954206,0.9006782945736435,0.9003105100232652
+OneHotEncoder,StandardScaler,Decision Tree,"{'criterion': 'gini', 'max_depth': None, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'splitter': 'best'}",0.8948643410852714,0.8943671204132934,0.8948643410852714,0.8944750276831637
+OneHotEncoder,MinMaxScaler,Decision Tree,"{'criterion': 'entropy', 'max_depth': None, 'max_features': None, 'min_samples_leaf': 1, 'min_samples_split': 5, 'splitter': 'best'}",0.8938953488372093,0.893755605522782,0.8938953488372093,0.8938199127768827

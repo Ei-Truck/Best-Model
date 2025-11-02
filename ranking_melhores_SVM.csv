@@ -1,0 +1,7 @@
+Encoder,Scaler,Modelo,Melhores Params,Accuracy,Precision,Recall,F1-Score,Erro
+OrdinalEncoder,MinMaxScaler,SVM,"{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}",0.9239341085271318,0.924448101584846,0.9239341085271318,0.9231140947264023,
+OrdinalEncoder,StandardScaler,SVM,"{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}",0.9215116279069767,0.9218597562022618,0.9215116279069767,0.9207080513094699,
+GetDummies,MinMaxScaler,SVM,"{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}",0.9161821705426356,0.9169891307920173,0.9161821705426356,0.9150919807450695,
+GetDummies,StandardScaler,SVM,"{'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}",0.8977713178294574,0.9015867583218035,0.8977713178294574,0.8952502040982743,
+OneHotEncoder,StandardScaler,SVM,,,,,,[WinError 1450] Insufficient system resources exist to complete the requested service
+OneHotEncoder,MinMaxScaler,SVM,,,,,,[WinError 1450] Insufficient system resources exist to complete the requested service
